@@ -5,8 +5,10 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +31,6 @@ public class MedicamentoNotificationReceiver extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
-
         Intent tomarIntent = new Intent(context, MarcarTomadoService.class);
         tomarIntent.putExtra("id", id);
         PendingIntent tomarPendingIntent = PendingIntent.getService(
@@ -45,15 +46,29 @@ public class MedicamentoNotificationReceiver extends BroadcastReceiver {
                 tomarPendingIntent
         );
 
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            if (notificationManager.areNotificationsEnabled()) {
+            if (context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
                 notificationManager.notify(id, builder.build());
+
+                Log.d("MedicamentoApp", "Notificação exibida para medicamento ID: " + id);
+            } else {
+                Log.e("MedicamentoApp", "Permissão de notificação não concedida");
             }
         } else {
-            NotificationManager notificationManager =
-                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(id, builder.build());
+
+            Log.d("MedicamentoApp", "Notificação exibida para medicamento ID: " + id);
         }
+
+
+        agendarProximaNotificacao(context, id, nome, intent.getStringExtra("horario"));
+    }
+
+    private void agendarProximaNotificacao(Context context, int id, String nome, String horario) {
+
     }
 }

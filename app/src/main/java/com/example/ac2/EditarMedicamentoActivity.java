@@ -3,10 +3,13 @@ package com.example.ac2;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -119,10 +122,10 @@ public class EditarMedicamentoActivity extends AppCompatActivity {
         finish();
     }
 
-    private void agendarNotificacao(int id, String nome, String horario) {
-        Intent intent = new Intent(this, MedicamentoNotificationReceiver.class);
-        intent.putExtra("id", id);
-        intent.putExtra("nome", nome);
+    public void agendarNotificacao(int id, String nome, String horario) {
+        Intent notificationIntent = new Intent(this, MedicamentoNotificationReceiver.class);
+        notificationIntent.putExtra("id", id);
+        notificationIntent.putExtra("nome", nome);
 
         String[] partes = horario.split(":");
         int hora = Integer.parseInt(partes[0]);
@@ -133,7 +136,6 @@ public class EditarMedicamentoActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, minuto);
         calendar.set(Calendar.SECOND, 0);
 
-
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
             calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
@@ -141,17 +143,44 @@ public class EditarMedicamentoActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this,
                 id,
-                intent,
+                notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(
-                AlarmManager.RTC_WAKEUP,
-                calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY,
-                pendingIntent
-        );
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.getTimeInMillis(),
+                        pendingIntent
+                );
+            } else {
+
+                Toast.makeText(this, "Permission necessary", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    pendingIntent
+            );
+        } else {
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY,
+                    pendingIntent
+            );
+        }
+
+
+        Log.d("MedicamentoApp", "Alarme agendado para " + horario + " ID: " + id);
     }
 
     private void cancelarNotificacao(int id) {
