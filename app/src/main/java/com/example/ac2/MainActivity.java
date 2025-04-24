@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             public void bindView(View view, Context context, Cursor cursor) {
                 super.bindView(view, context, cursor);
 
-                // Seu código para lidar com o ImageView continua o mesmo
+
                 ImageView imageStatus = view.findViewById(R.id.imageStatus);
                 int tomado = cursor.getInt(cursor.getColumnIndexOrThrow(MedicamentoDBHelper.COLUMN_TOMADO));
 
