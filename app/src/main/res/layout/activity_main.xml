@@ -8,20 +8,23 @@
     tools:context=".MainActivity">
 
     <ListView
-    android:id="@+id/listView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="@android:color/darker_gray"
-    android:dividerHeight="1dp" />
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/fab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_margin="16dp"
-        app:srcCompat="@android:drawable/ic_input_add"
-        tools:ignore="MissingConstraints" /> /
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

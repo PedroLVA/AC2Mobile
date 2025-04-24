@@ -5,10 +5,10 @@
 
     <string name="channel_name">Lembretes de Medicamentos</string>
     <string name="channel_description">Canal para lembretes de medicamentos</string>
-    <string name="marcar_tomado">Marcar como tomado</string>
+    <string name="marcar_tomado">tomado</string>
     <string name="excluir_medicamento">Excluir Medicamento</string>
     <string name="confirmar_exclusao">Tem certeza que deseja excluir este medicamento?</string>
-
+    <string name="status_do_medicamentos">Status Medicamento</string>
     <string name="nome_medicamento">Nome do Medicamento</string>
     <string name="digite_nome_medicamento">Digite o nome do medicamento</string>
     <string name="descricao">Descrição</string>
@@ -21,7 +21,7 @@
     <string name="medicamento_atualizado">Medicamento atualizado com sucesso</string>
     <string name="hora_do_medicamento">Hora do seu medicamento</string>
     <string name="hora_de_tomar">Hora de tomar: %s</string>
-    <string name="marcar_como_tomado">Marcar como tomado</string>
+    <string name="marcar_como_tomado">tomado</string>
     <string name="medicamento_tomado">Medicamento tomado</string>
     <string name="medicamento_marcado_como_tomado">Medicamento marcado como tomado</string>
 </resources>

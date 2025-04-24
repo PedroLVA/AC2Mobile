@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         dbHelper = new MedicamentoDBHelper(this);
         listView = findViewById(R.id.listView);
 
+        createNotificationChannel();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, EditarMedicamentoActivity.class);
@@ -105,16 +107,18 @@ public class MainActivity extends AppCompatActivity {
     private void carregarMedicamentos() {
         Cursor cursor = dbHelper.listarMedicamentos();
 
+
         String[] from = new String[]{
                 MedicamentoDBHelper.COLUMN_NOME,
-                MedicamentoDBHelper.COLUMN_HORARIO,
-                MedicamentoDBHelper.COLUMN_TOMADO
+                MedicamentoDBHelper.COLUMN_HORARIO
+
         };
+
 
         int[] to = new int[]{
                 R.id.textNome,
-                R.id.textHorario,
-                R.id.imageStatus
+                R.id.textHorario
+
         };
 
         adapter = new SimpleCursorAdapter(
@@ -129,21 +133,41 @@ public class MainActivity extends AppCompatActivity {
             public void bindView(View view, Context context, Cursor cursor) {
                 super.bindView(view, context, cursor);
 
+                // Seu código para lidar com o ImageView continua o mesmo
                 ImageView imageStatus = view.findViewById(R.id.imageStatus);
                 int tomado = cursor.getInt(cursor.getColumnIndexOrThrow(MedicamentoDBHelper.COLUMN_TOMADO));
 
                 if (tomado == 1) {
                     imageStatus.setImageResource(R.drawable.ic_launcher_background);
-                    imageStatus.setColorFilter(ContextCompat.getColor(context, R.color.white));
                 } else {
                     imageStatus.setImageResource(R.drawable.ic_launcher_foreground);
-                    imageStatus.setColorFilter(ContextCompat.getColor(context, R.color.white));
                 }
+                imageStatus.setColorFilter(ContextCompat.getColor(context, R.color.white));
 
                 view.findViewById(R.id.btnTomado).setOnClickListener(v -> {
                     int id = cursor.getInt(cursor.getColumnIndexOrThrow(MedicamentoDBHelper.COLUMN_ID));
                     dbHelper.marcarComoTomado(id, tomado == 0 ? 1 : 0);
                     carregarMedicamentos();
+                });
+
+                view.findViewById(R.id.btnEditar).setOnClickListener(v -> {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(MedicamentoDBHelper.COLUMN_ID));
+                    Intent intent = new Intent(context, EditarMedicamentoActivity.class);
+                    intent.putExtra("id", id);
+                    context.startActivity(intent);
+                });
+
+                view.findViewById(R.id.btnExcluir).setOnClickListener(v -> {
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(MedicamentoDBHelper.COLUMN_ID));
+                    new AlertDialog.Builder(context)
+                            .setTitle(context.getString(R.string.excluir_medicamento))
+                            .setMessage(context.getString(R.string.confirmar_exclusao))
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                dbHelper.excluirMedicamento(id);
+                                ((MainActivity)context).carregarMedicamentos();
+                            })
+                            .setNegativeButton(android.R.string.no, null)
+                            .show();
                 });
             }
         };

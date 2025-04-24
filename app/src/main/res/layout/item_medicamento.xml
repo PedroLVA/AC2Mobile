@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,15 +12,18 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextView
         android:id="@+id/textHorario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textNome"
-        android:layout_marginTop="4dp"
-        tools:ignore="MissingConstraints"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp" />
 
     <ImageView
         android:id="@+id/imageStatus"
@@ -31,11 +35,32 @@
 
     <Button
         android:id="@+id/btnTomado"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
         android:layout_below="@id/imageStatus"
-        android:text="@string/marcar_tomado" />
+        android:layout_alignParentEnd="true"
+        android:text="@string/marcar_tomado"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="-8dp" />
+
+    <ImageButton
+        android:id="@+id/btnEditar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_edit"
+        app:layout_constraintEnd_toStartOf="@id/btnTomado"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+    <ImageButton
+        android:id="@+id/btnExcluir"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_delete"
+        app:layout_constraintEnd_toStartOf="@id/btnEditar"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

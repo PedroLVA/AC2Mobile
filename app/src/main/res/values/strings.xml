@@ -2,10 +2,10 @@
 <string name="app_name">AC2</string>
 
 
-<string name="marcar_tomado">Mark as taken</string>
+<string name="marcar_tomado">taken</string>
 <string name="excluir_medicamento">Delete Medication</string>
 <string name="confirmar_exclusao">Are you sure you want to delete this medication?</string>
-
+    <string name="status_do_medicamentos">Medication Status</string>
     <string name="channel_name">Medication Reminders</string>
     <string name="channel_description">Channel for medication reminders</string>
 <string name="nome_medicamento">Medication Name</string>
@@ -22,7 +22,7 @@
 
 <string name="hora_do_medicamento">Time to take your medication</string>
 <string name="hora_de_tomar">Time to take: %s</string>
-<string name="marcar_como_tomado">Mark as taken</string>
+<string name="marcar_como_tomado">taken</string>
 <string name="medicamento_tomado">Medication taken</string>
 <string name="medicamento_marcado_como_tomado">Medication marked as taken</string>
 </resources>
